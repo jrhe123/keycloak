@@ -99,10 +99,3 @@ app.get('/testRole', keycloak.protect('realm:user'), (req, res) => {
     Confirmation: 'Role protected'
   })
 });
-
-
-app.get( '/test', keycloak.protect('client_user'),  (req, res) => {
-  return res.json({
-    Confirmation: 'ok'
-  })
-});
