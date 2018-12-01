@@ -59,12 +59,11 @@ app.use(keycloak.middleware({
   // protected: '/protected/test',
 }));
 
+
 // Routes
 app.get('/login', keycloak.protect(), function (req, res) {
-
-  console.log('req: ', req);
-  console.log('res: ', res);
-
+  // console.log(req.session['auth_redirect_uri']);
+  // console.log(req.session['keycloak-token']);
   res.render('index', {
     result: JSON.stringify(JSON.parse(req.session['keycloak-token']), null, 4),
     event: '1. Authentication\n2. Login'
@@ -72,6 +71,7 @@ app.get('/login', keycloak.protect(), function (req, res) {
 });
 
 
+// resource scope
 app.get('/protected/resource', keycloak.enforcer(['resource:view', 'resource:write'], {
   resource_server_id: 'nodejs-apiserver'
 }), function (req, res) {
@@ -82,11 +82,27 @@ app.get('/protected/resource', keycloak.enforcer(['resource:view', 'resource:wri
 });
 
 
-app.get('/protected/test', keycloak.enforcer(['resource:view', 'resource:write'], {
+// resource scope
+app.get('/protected/test', keycloak.enforcer(['resource:view', 'resource:delete', 'permission:user'], {
   resource_server_id: 'nodejs-apiserver'
 }), function (req, res) {
   res.render('index', {
     result: JSON.stringify(JSON.parse(req.session['keycloak-token']), null, 4),
     event: '1. Access granted to Default test\n'
   });
+});
+
+
+// realm role
+app.get('/testRole', keycloak.protect('realm:user'), (req, res) => {
+  return res.json({
+    Confirmation: 'Role protected'
+  })
+});
+
+
+app.get( '/test', keycloak.protect('client_user'),  (req, res) => {
+  return res.json({
+    Confirmation: 'ok'
+  })
 });
