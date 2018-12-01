@@ -83,7 +83,7 @@ app.get('/protected/resource', keycloak.enforcer(['resource:view', 'resource:wri
 
 
 // resource scope
-app.get('/protected/test', keycloak.enforcer(['resource:view', 'resource:delete', 'permission:user'], {
+app.get('/protected/test', keycloak.enforcer(['resource:delete'], {
   resource_server_id: 'nodejs-apiserver'
 }), function (req, res) {
   res.render('index', {
@@ -95,6 +95,15 @@ app.get('/protected/test', keycloak.enforcer(['resource:view', 'resource:delete'
 
 // realm role
 app.get('/testRole', keycloak.protect('realm:user'), (req, res) => {
+  return res.json({
+    Confirmation: 'Role protected'
+  })
+});
+
+
+app.get('/test111', keycloak.enforcer(['resource:delete'], {
+  resource_server_id: 'nodejs-apiserver'
+}), (req, res) => {
   return res.json({
     Confirmation: 'Role protected'
   })
