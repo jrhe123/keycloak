@@ -176,7 +176,16 @@ app.get('/login', keycloak.protect(), function (req, res) {
 });
 
 
-// resource scope
+// #1
+// user: user
+// password: user
+// user role: "user"
+// resource: res1
+// realm id: nodejs-apiserver
+// matched permission type: scope
+//  > scope: view, create, delete
+//  > these scopes were added to the res1
+//  > applied policy: policy1 -> role policy to "user"
 app.get('/protected/resource', keycloak.enforcer(['res1:view'], {
   resource_server_id: 'nodejs-apiserver'
 }), function (req, res) {
@@ -187,7 +196,6 @@ app.get('/protected/resource', keycloak.enforcer(['res1:view'], {
 });
 
 
-// resource scope
 app.get('/protected/test', keycloak.enforcer(['res1:create'], {
   resource_server_id: 'nodejs-apiserver'
 }), function (req, res) {
@@ -198,18 +206,18 @@ app.get('/protected/test', keycloak.enforcer(['res1:create'], {
 });
 
 
-// realm role
-app.get('/testRole', keycloak.protect('realm:user'), (req, res) => {
-  return res.json({
-    Confirmation: 'realm role protected'
-  })
-});
-
-
 app.get('/test111', keycloak.enforcer(['res2:delete'], {
   resource_server_id: 'nodejs-apiserver'
 }), (req, res) => {
   return res.json({
     Confirmation: 'realm scope protected'
+  })
+});
+
+
+// #2
+app.get('/testRole', keycloak.protect('realm:user'), (req, res) => {
+  return res.json({
+    Confirmation: 'realm role protected'
   })
 });
