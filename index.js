@@ -172,8 +172,8 @@ app.get('/login', keycloak.protect(), function (req, res) {
   res.render('index', {
     result: JSON.stringify(JSON.parse(req.session['keycloak-token']), null, 4),
     event: '1. Authentication\n2. Login'
-  });
-});
+  })
+})
 
 
 // #1
@@ -192,8 +192,8 @@ app.get('/protected/resource', keycloak.enforcer(['res1:view'], {
   res.render('index', {
     result: JSON.stringify(JSON.parse(req.session['keycloak-token']), null, 4),
     event: '1. Access granted to Default Resource\n'
-  });
-});
+  })
+})
 
 
 app.get('/protected/test', keycloak.enforcer(['res1:create'], {
@@ -202,8 +202,8 @@ app.get('/protected/test', keycloak.enforcer(['res1:create'], {
   res.render('index', {
     result: JSON.stringify(JSON.parse(req.session['keycloak-token']), null, 4),
     event: '1. Access granted to Default test\n'
-  });
-});
+  })
+})
 
 
 app.get('/test111', keycloak.enforcer(['res2:delete'], {
@@ -212,7 +212,7 @@ app.get('/test111', keycloak.enforcer(['res2:delete'], {
   return res.json({
     Confirmation: 'realm scope protected'
   })
-});
+})
 
 
 // #2
@@ -220,4 +220,4 @@ app.get('/testRole', keycloak.protect('realm:user'), (req, res) => {
   return res.json({
     Confirmation: 'realm role protected'
   })
-});
+})
