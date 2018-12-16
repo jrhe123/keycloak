@@ -182,8 +182,13 @@ app.get('/login', keycloak.protect(), function (req, res) {
 // user role: "user"
 // resource: res1
 // realm id: nodejs-apiserver
-// matched permission type: scope
+
+// matched permissions: at least one of them 
+// 1. scope
 //  > scope: view, create, delete
+//  > these scopes were added to the res1
+//  > applied policy: policy1 -> role policy to "user"
+// 2. resource
 //  > these scopes were added to the res1
 //  > applied policy: policy1 -> role policy to "user"
 app.get('/protected/resource', keycloak.enforcer(['res1:view'], {
