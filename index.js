@@ -72,6 +72,7 @@ app.get('/test', (req, res) => {
   adminClient(settings)
     .then((client) => {
 
+      // 1. list realms
       // client.realms.find("nodejs-example")
       //   .then((realms) => {
       //     return res.json({
@@ -82,6 +83,7 @@ app.get('/test', (req, res) => {
       //     console.log('Error', err);
       //   })
 
+      // 2. create role
       // client.realms.roles.create('nodejs-example', {name: 'new role from api'})
       //   .then((newRole) => {
       //     console.log('newRole: ', newRole);
@@ -90,16 +92,71 @@ app.get('/test', (req, res) => {
       //     console.log('Error', err);
       //   })
 
-      client.realms.roles.find('nodejs-example', '')
-        .then((roles) => {
-          return res.json({
-            roles
-          })
-        })
-        .catch((err) => {
-          console.log('Error', err);
-        })
+      // 3. list roles
+      // client.realms.roles.find('nodejs-example', '')
+      //   .then((roles) => {
+      //     return res.json({
+      //       roles
+      //     })
+      //   })
+      //   .catch((err) => {
+      //     console.log('Error', err);
+      //   })
 
+      // 4. create user
+      // client.users.create('nodejs-example', { username: 'new user from api' })
+      //   .then((newUser) => {
+      //     return res.json({
+      //       newUser
+      //     })
+      //   })
+      //   .catch((err) => {
+      //     console.log('Error', err);
+      //   })
+
+      // 5. list users
+      // client.users.find('nodejs-example', '')
+      //   .then((users) => {
+      //     return res.json({
+      //       users
+      //     })
+      //   })
+      //   .catch((err) => {
+      //     console.log('Error', err);
+      //   })
+
+      // 6. add role to user
+      // user id: 21763e38-3d29-43f1-879e-1b9660a37c48
+      // role id: e070c22c-22bb-4c9a-9485-b7c9755a2f5d
+      // role name: new role from api
+      // client.realms.maps.map('nodejs-example', '21763e38-3d29-43f1-879e-1b9660a37c48',
+      //   [
+      //     {
+      //       id: 'e070c22c-22bb-4c9a-9485-b7c9755a2f5d',
+      //       name: 'new role from api',
+      //     },
+      //   ])
+      //   .then(() => {
+      //     console.log('added');
+      //   })
+      //   .catch((err) => {
+      //     console.log('Error', err);
+      //   })
+
+      // 7. remove role from user
+      // client.realms.maps.unmap('nodejs-example', '21763e38-3d29-43f1-879e-1b9660a37c48',
+      //   [
+      //     {
+      //       id: 'e070c22c-22bb-4c9a-9485-b7c9755a2f5d',
+      //       name: 'new role from api',
+      //     },
+      //   ])
+      //   .then(() => {
+      //     console.log('removed');
+      //   })
+      //   .catch((err) => {
+      //     console.log('Error', err);
+      //   })
 
     })
     .catch((err) => {
