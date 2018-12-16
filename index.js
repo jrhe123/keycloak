@@ -2,6 +2,7 @@ var Keycloak = require('keycloak-connect');
 var hogan = require('hogan-express');
 var express = require('express');
 var session = require('express-session');
+var adminClient = require('keycloak-admin-client');
 var app = express();
 var server = app.listen(3000, function () {
   var host = server.address().address;
@@ -60,6 +61,53 @@ app.use(keycloak.middleware({
 }));
 
 
+app.get('/test', (req, res) => {
+  const settings = {
+    baseUrl: 'http://127.0.0.1:8080/auth',
+    username: 'admin',
+    password: 'admin',
+    grant_type: 'password',
+    client_id: 'admin-cli'
+  };
+  adminClient(settings)
+    .then((client) => {
+
+      // client.realms.find("nodejs-example")
+      //   .then((realms) => {
+      //     return res.json({
+      //       realms
+      //     })
+      //   })
+      //   .catch((err) => {
+      //     console.log('Error', err);
+      //   })
+
+      // client.realms.roles.create('nodejs-example', {name: 'new role from api'})
+      //   .then((newRole) => {
+      //     console.log('newRole: ', newRole);
+      //   })
+      //   .catch((err) => {
+      //     console.log('Error', err);
+      //   })
+
+      client.realms.roles.find('nodejs-example', '')
+        .then((roles) => {
+          return res.json({
+            roles
+          })
+        })
+        .catch((err) => {
+          console.log('Error', err);
+        })
+
+
+    })
+    .catch((err) => {
+      console.log('Error', err);
+    })
+})
+
+
 // Routes
 app.get('/login', keycloak.protect(), function (req, res) {
   // console.log(req.session['auth_redirect_uri']);
@@ -72,7 +120,7 @@ app.get('/login', keycloak.protect(), function (req, res) {
 
 
 // resource scope
-app.get('/protected/resource', keycloak.enforcer(['resource:view', 'resource:write'], {
+app.get('/protected/resource', keycloak.enforcer(['res1:view'], {
   resource_server_id: 'nodejs-apiserver'
 }), function (req, res) {
   res.render('index', {
@@ -83,7 +131,7 @@ app.get('/protected/resource', keycloak.enforcer(['resource:view', 'resource:wri
 
 
 // resource scope
-app.get('/protected/test', keycloak.enforcer(['resource:delete'], {
+app.get('/protected/test', keycloak.enforcer(['res1:create'], {
   resource_server_id: 'nodejs-apiserver'
 }), function (req, res) {
   res.render('index', {
@@ -96,15 +144,15 @@ app.get('/protected/test', keycloak.enforcer(['resource:delete'], {
 // realm role
 app.get('/testRole', keycloak.protect('realm:user'), (req, res) => {
   return res.json({
-    Confirmation: 'Role protected'
+    Confirmation: 'realm role protected'
   })
 });
 
 
-app.get('/test111', keycloak.enforcer(['resource:delete'], {
+app.get('/test111', keycloak.enforcer(['res2:delete'], {
   resource_server_id: 'nodejs-apiserver'
 }), (req, res) => {
   return res.json({
-    Confirmation: 'Role protected'
+    Confirmation: 'realm scope protected'
   })
 });

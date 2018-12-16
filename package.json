@@ -13,6 +13,7 @@
     "express-session": "*",
     "hogan-express": "*",
     "jwk-to-pem": "^2.0.0",
+    "keycloak-admin-client": "^0.12.0",
     "keycloak-connect": "file:../"
   }
 }
